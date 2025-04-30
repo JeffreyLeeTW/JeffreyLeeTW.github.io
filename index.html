@@ -78,7 +78,7 @@
           description: 'Welcome to my website.',
           link: 'https://jeffreylee143.github.io',
           linkText: 'Click here.',
-          device: navigator.userAgent,
+          device: '',
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           currentTime: new Date().toLocaleString(),
           ip: 'Loading...',
@@ -102,6 +102,14 @@
         if (prefersDark) {
           document.body.classList.add('dark-mode');
         }
+
+        // Simplify device name
+        const ua = navigator.userAgent;
+        if (ua.includes('Windows')) this.device = 'Windows';
+        else if (ua.includes('Mac')) this.device = 'MacOS';
+        else if (ua.includes('Android')) this.device = 'Android';
+        else if (ua.includes('iPhone') || ua.includes('iPad')) this.device = 'iOS';
+        else this.device = 'Unknown Device';
       }
     }).mount('#app')
   </script>
