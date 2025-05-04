@@ -87,3 +87,14 @@
     transform: translateX(-50%) scale(1.2);
     color: #4078c0;
   }
+
+  .doro-gif {
+    position: fixed;
+    bottom: 100px;      /* 距離畫面底部 */
+    left: 50%;          /* 水平置中 */
+    transform: translateX(-50%);
+    width: 150px;       /* 根據實際需求調整大小 */
+    height: auto;
+    z-index: 998;
+    pointer-events: none; /* 不阻擋點擊後面的 GitHub 圖示 */
+  }
