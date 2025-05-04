@@ -5,66 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JeffreyLee</title>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-  <style>
-    :root {
-      color-scheme: light dark;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    body.dark-mode {
-      background-color: #121212;
-      color: #eee;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-    }
-    p {
-      font-size: 1.2rem;
-      color: inherit;
-    }
-    a {
-      margin-top: 1rem;
-      display: inline-block;
-      text-decoration: none;
-      color: #007BFF;
-      font-size: 1rem;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    .info {
-      margin-top: 2rem;
-      font-size: 1rem;
-      color: inherit;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
   <div id="app">
+    <button class="theme-toggle" @click="toggleTheme">{{ isDark ? '🌞' : '🌙' }}</button>
     <h1>{{ name }}</h1>
-    <p>{{ description }}</p>
-    <a :href="link" target="_blank">{{ linkText }}</a>
-
+    <i class='bx bxl-github github-icon' @click="goGithub" title="Go to GitHub"></i>
     <div class="info">
       <p>Device: {{ device }}</p>
       <p>{{ currentTime }} {{ timezone }}</p>
       <p>IP: {{ ip }}</p>
+      <p>{{ major }}</p>
+      <p>{{ minor }}</p>
     </div>
   </div>
 
@@ -75,41 +29,49 @@
       data() {
         return {
           name: 'JeffreyLee',
-          description: 'Welcome to my website.',
-          link: 'https://jeffreylee143.github.io',
-          linkText: 'Click here.',
+          major: 'Major: Information of Management',
+          minor: "Minor: Computer Science and Information Engineering",
+          link: 'https://github.com/JeffreyLeeTW',
+          linkText: 'Github',
           device: '',
           timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           currentTime: new Date().toLocaleString(),
           ip: 'Loading...',
-          language: navigator.language
+          language: navigator.language,
+          isDark: false
         }
       },
       mounted() {
-        // Get IP
         fetch('https://api.ipify.org?format=json')
           .then(res => res.json())
           .then(data => this.ip = data.ip)
           .catch(() => this.ip = 'Unable to retrieve IP');
 
-        // Update clock
         setInterval(() => {
           this.currentTime = new Date().toLocaleString();
         }, 1000);
 
-        // Auto theme
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        this.isDark = prefersDark;
         if (prefersDark) {
           document.body.classList.add('dark-mode');
         }
 
-        // Simplify device name
         const ua = navigator.userAgent;
         if (ua.includes('Windows')) this.device = 'Windows';
         else if (ua.includes('Mac')) this.device = 'MacOS';
         else if (ua.includes('Android')) this.device = 'Android';
         else if (ua.includes('iPhone') || ua.includes('iPad')) this.device = 'iOS';
         else this.device = 'Unknown Device';
+      },
+      methods: {
+        toggleTheme() {
+          this.isDark = !this.isDark;
+          document.body.classList.toggle('dark-mode', this.isDark);
+        },
+        goGithub() {
+          window.open(this.link, '_blank');
+        }
       }
     }).mount('#app')
   </script>
